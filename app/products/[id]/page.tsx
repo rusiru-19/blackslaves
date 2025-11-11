@@ -65,7 +65,8 @@ const handleAddToCart = async () => {
       setIsAdded(true);
       setcartcount((prev) => prev + 1);
   } catch (error) {
-    if (error.code === "not-found") {
+    const firebaseError = error as { code?: string };
+    if (firebaseError.code === "not-found") {
       await setDoc(doc(db, "users", uid), {
         cart: [product.id],
       });

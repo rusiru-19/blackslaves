@@ -25,7 +25,7 @@ export default function SignupPage() {
   const router = useRouter();
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault()
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
