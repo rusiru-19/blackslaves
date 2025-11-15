@@ -1,184 +1,210 @@
-import Link from "next/link"
-import { ArrowRight, Package, Zap, Skull, Book } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client"
 
-export default function HomePage() {
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Search, ShoppingCart, ArrowRight, Star, Zap, Shield, TrendingUp } from "lucide-react"
+import { collection, getDocs } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import Header from "@/components/header"
+
+export default function LandingPage() {
+  const [products, setProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "slaves"))
+      const PRODUCTS: any[] = []
+      querySnapshot.forEach((doc) => {
+        PRODUCTS.push({ id: doc.id, ...doc.data() })
+      })
+      setProducts(PRODUCTS.slice(0, 8)) // Show only 8 featured products
+      setLoading(false)
+    } catch (err) {
+      console.error("Error fetching products:", err)
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold tracking-tighter">BLACKSLAVES </div>
-          <div className="flex items-center gap-8">
-            <Link href="/products" className="text-sm hover:text-accent transition-colors">
-              Shop
-            </Link>
-            <Link href="/login" className="text-sm hover:text-accent transition-colors">
-              Sign In
-            </Link>
-            <Button asChild className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/signup">Join</Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-background">
+      <Header />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-card opacity-50" />
-
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-          <div className="inline-block mb-6 text-accent text-sm tracking-widest font-semibold">EBONY SHADOWS</div>
-          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-6 text-capital text-balance leading-tight">
-            A JOURNY INTO BLACK SLAVERY
-          </h1>
-          <p className="text-lg text-foreground/70 mb-12 max-w-2xl mx-auto text-balance">
-          Uncover the secrets and passions hidden within the annals of history. From the plantations to the slave quarters, experience the allure of a time long past           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/products" className="gap-2">
-                Explore Slaves <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
+      <section className="relative overflow-hidden bg-gradient-to-br from-accent/20 via-background to-background">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 relative">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="inline-block">
+                <span className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold">
+                  New Collection Available
+                </span>
+              </div>
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                Discover Premium
+                <span className="block text-accent">Mens Collection</span>
+              </h1>
+              <p className="text-xl text-foreground/70 max-w-lg">
+                Make Your Life style easy with affordable amount with one of our blackslave. We value privacy of every customer
+              </p>
+              <div className="flex gap-4">
+                <Link href="/products">
+                  <Button size="lg" className="rounded-full group">
+                    Shop Now
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Button size="lg" variant="outline" className="rounded-full">
+                  View Collection
+                </Button>
+              </div>
+              <div className="flex gap-8 pt-4">
+                <div>
+                  <div className="text-3xl font-bold text-accent">500+</div>
+                  <div className="text-sm text-foreground/60">Mens</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-accent">50k+</div>
+                  <div className="text-sm text-foreground/60">Successfull <br></br> Delevaries</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-accent">4.9</div>
+                  <div className="text-sm text-foreground/60">Rating</div>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-square rounded-3xl bg-gradient-to-br from-accent/20 to-accent/5 backdrop-blur-sm border border-border/40 overflow-hidden">
+                {products[0] && (
+                  <img
+                    src={products[0].image || "/placeholder.svg"}
+                    alt="Featured Product"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-accent text-accent-foreground p-6 rounded-2xl shadow-xl">
+                <div className="text-sm font-semibold">Starting from</div>
+                <div className="text-3xl font-bold">${products[0]?.price || "99"}</div>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Decorative Element */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 border-t border-border/40">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-16 text-center">Why You Need a Slave</h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
+      <section className="py-16 border-y border-border/40">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-8">
             {[
-              {
-                icon: Skull,
-                title: "Explore Forbidden Fantasies",
-                desc: "Dive into a world of erotic possibilities where taboo becomes reality. Own a slave and unlock a realm of sensual exploration, where your deepest desires are brought to life in the most intimate ways",
-              },
-              {
-                icon: Zap,
-                title: "Unleash Your Dominant Side",
-                desc: "Indulge in the thrill of power and control. A slave offers the perfect outlet for your dominant desires, providing a sense of mastery and fulfillment that elevates your life to new heights.",
-              },
-              {
-                icon: Book,
-                title: "Immerse Yourself in History",
-                desc: "Experience the rich tapestry of the past with a living connection to historical eras. Own a slave and gain unparalleled insights into the cultural and social dynamics of bygone times.",
-              },
-            ].map((feature, i) => {
-              const Icon = feature.icon
-              return (
-                <div
-                  key={i}
-                  className="p-8 rounded-lg bg-card/50 border border-border/40 hover:border-accent/50 transition-all duration-300"
-                >
-                  <Icon className="w-8 h-8 text-accent mb-4" />
-                  <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-foreground/60">{feature.desc}</p>
+              { icon: Zap, title: "Fast Delivery", desc: "10-15 day shipping" },
+              { icon: Shield, title: "Top Privacy", desc: "100% protected" },
+              { icon: Star, title: "Premium Quality", desc: "Top-rated Slaves" },
+              { icon: TrendingUp, title: "Affordable Prices", desc: "Competitive rates" },
+            ].map((feature, i) => (
+              <div key={i} className="text-center space-y-3">
+                <div className="inline-flex p-4 bg-accent/10 rounded-2xl">
+                  <feature.icon className="w-6 h-6 text-accent" />
                 </div>
-              )
-            })}
+                <h3 className="font-semibold">{feature.title}</h3>
+                <p className="text-sm text-foreground/60">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-24 bg-gradient-to-b from-background to-accent/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Featured Products</h2>
+            <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
+              Handpicked selection of our most popular items
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {loading ? (
+              Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="rounded-2xl bg-card/30 border border-border/40 p-4 space-y-4">
+                  <div className="aspect-square bg-accent/10 rounded-xl animate-pulse"></div>
+                  <div className="h-4 bg-accent/10 rounded animate-pulse"></div>
+                  <div className="h-4 bg-accent/10 rounded w-2/3 animate-pulse"></div>
+                </div>
+              ))
+            ) : (
+              products.map((product) => (
+                <Link key={product.id} href={`/products/${product.id}`}>
+                  <div className="group cursor-pointer rounded-2xl overflow-hidden bg-card/30 border border-border/40 hover:border-accent/50 hover:shadow-xl transition-all duration-300">
+                    <div className="relative aspect-square overflow-hidden bg-card">
+                      <img
+                        src={product.image || "/placeholder.svg"}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 right-3 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
+                        {product.category}
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-semibold mb-2 group-hover:text-accent transition-colors line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-2xl font-bold text-accent">${product.price}</span>
+                        <div className="flex items-center gap-1">Age:
+                          <span className="text-sm font-semibold">{product.age}</span>
+                        </div>
+                      </div>
+                      <Button className="w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                        View Details
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            )}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/products">
+              <Button size="lg" variant="outline" className="rounded-full group">
+                View All Products
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-card/30 border-t border-border/40">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6">Why Us?</h2>
-          <p className="text-lg text-foreground/70 mb-8">
-At our black slave website, your privacy and satisfaction are our top priorities. We ensure a discreet, secure platform where your preferences and interactions remain strictly confidential. Additionally, we offer only the highest quality slaves, meticulously selected for their obedience, skills, and ability to fulfill your every desire. Trust us to deliver an unparalleled experience where discretion meets excellence          </p>
-          <Button asChild size="lg" className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90">
-            <Link href="/products">Start Shopping</Link>
-          </Button>
+      <section className="py-24 bg-gradient-to-br from-accent/20 via-accent/10 to-background">
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold">Ready to Upgrade Your Style?</h2>
+          <p className="text-xl text-foreground/70">
+            Join thousands of satisfied customers and experience premium quality
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link href="/products">
+              <Button size="lg" className="rounded-full">
+                Start Shopping
+              </Button>
+            </Link>
+            <Button size="lg" variant="outline" className="rounded-full">
+              Contact Us
+            </Button>
+          </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border/40 bg-card/20 py-12 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold mb-4">BLACKSLAVES</h3>
-              <p className="text-foreground/60 text-sm">Premium curated collection for discerning taste.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Shop</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li>
-                  <Link href="/products" className="hover:text-accent transition-colors">
-                    All Products
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products" className="hover:text-accent transition-colors">
-                    New Arrivals
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products" className="hover:text-accent transition-colors">
-                    Collections
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Shipping Info
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Returns
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Privacy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Terms
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-border/40 pt-8 flex items-center justify-between text-sm text-foreground/60">
-            <p>&copy; 2025 Luxe. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-accent transition-colors">
-                Twitter
-              </a>
-              <a href="#" className="hover:text-accent transition-colors">
-                Instagram
-              </a>
-              <a href="#" className="hover:text-accent transition-colors">
-                LinkedIn
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

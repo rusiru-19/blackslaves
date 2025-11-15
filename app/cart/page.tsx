@@ -215,10 +215,10 @@ const removeItem = async (id: string) => {
                   <span className="text-accent">${total.toFixed(2)}</span>
                 </div>
               </div>
-
               <Button className="w-full rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 py-6 font-semibold mb-3">
                 <Lock className="w-4 h-4 mr-2" />
-                Proceed to Checkout
+                <Link href="/checkout" >Proceed to Checkout</Link>
+                
               </Button>
 
               <Button
