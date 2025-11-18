@@ -19,11 +19,13 @@ export default function LoginPage() {
     password: "",
     rememberMe: false,
   })
+  const [loginin , setLoinin] = useState(false)
 
   const handleSubmit = async (e:any) => {
     e.preventDefault()
     try {
       //auth
+      setLoinin(true)
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
       localStorage.setItem('uid', userCredential.user.uid);
@@ -36,21 +38,24 @@ export default function LoginPage() {
       const userData = docSnap.data();
       role = userData.role;
     } else {
+      setLoinin(false)
       console.log("No such document!");
       }
    
     // set the cookie
       document.cookie = `token=${token};  path=/; ${formData.rememberMe ? 'max-age=' + 60 * 60 * 24 * 30 : ''}`;
       document.cookie = `role=${role}; path=/; ${formData.rememberMe ? 'max-age=' + 60 * 60 * 24 * 30 : ''}`;
-
+      setLoinin(false)
       toast.success("Login successful!");
       if (role === 'admin') {
-        router.push("/admin/dashboard");
+        router.push("/admin");
         return;
       }else{
         router.push("/products");
       }
     } catch (error) {
+      setLoinin(false)
+
       toast.error(`Error: ${error}`);
     }
   }
@@ -120,7 +125,6 @@ const router = useRouter()
             </div>
           </div>
 
-          {/* Remember & Forgot */}
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -139,7 +143,7 @@ const router = useRouter()
             type="submit"
             className="w-full rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 h-12 font-semibold text-base"
           >
-            Sign In
+          {loginin ? 'login...' : 'login'}
           </Button>
         </form>
 

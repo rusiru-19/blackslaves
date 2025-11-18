@@ -229,9 +229,7 @@ const removeItem = async (id: string) => {
                 <Link href="/products">Continue Shopping</Link>
               </Button>
 
-              <p className="text-xs text-foreground/60 text-center mt-6">
-                ✓ Secure checkout • Free returns • 30-day guarantee
-              </p>
+  
             </div>
           </div>
         </div>

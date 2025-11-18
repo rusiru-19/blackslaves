@@ -1,10 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart, LogOut } from "lucide-react"
 import React from "react"
 import { doc, getDoc } from "firebase/firestore"
-import { db } from "@/lib/firebase"
+import { db,  } from "@/lib/firebase"
 import Link from "next/link"
+import { getAuth, signOut } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify"
+
 interface HeaderProps {
   count?: number
 }
@@ -47,9 +50,19 @@ export default function Header({ count = 0 }: HeaderProps) {
 
     fetchUserCart()
   }, [])
+    const logout = (async()=>{
+      const auth = getAuth();
+      await signOut(auth);
+      localStorage.removeItem("uid");
+      toast.success('logout')
+      window.location.reload();
+
+
+    })
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg">
+      <ToastContainer></ToastContainer>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/" className="text-2xl font-bold tracking-tighter">
           BLACKSLAVES
@@ -75,6 +88,10 @@ export default function Header({ count = 0 }: HeaderProps) {
                 )}
               </button>
               </Link>
+              <button  className="relative p-2 hover:bg-card rounded-lg transition-colors group" onClick={logout}>
+              <LogOut  className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </button>
+
             </>
           ) : (
             <a href="/login" className="text-sm hover:text-accent transition-colors">

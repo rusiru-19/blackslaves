@@ -21,12 +21,14 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
   })
+  const [signin , setSignin] = useState(false)
 
   const router = useRouter();
 
 
   const handleSubmit = (e:any) => {
     e.preventDefault()
+    setSignin(true)
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -43,8 +45,9 @@ export default function SignupPage() {
           createdAt: new Date(),
           lastLogin: new Date(),
         }).then(() => {
+          setSignin(false)
           toast.success("Account created successfully!");
-          router.push('/');
+          router.push('/login');
         })
 
 
@@ -55,6 +58,7 @@ export default function SignupPage() {
         const errorMessage = error.message;
         toast.error(`Error: ${errorMessage}`);
         console.error("Error creating user:", errorCode, errorMessage);
+        setSignin(false)
       });
 
   }
@@ -81,7 +85,6 @@ export default function SignupPage() {
           </Link>
 
           <h1 className="text-4xl font-bold mb-2">Create Account</h1>
-          <p className="text-foreground/60">Join Luxe and discover premium products</p>
         </div>
 
         {/* Form */}
@@ -94,7 +97,7 @@ export default function SignupPage() {
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="username"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="bg-card/50 border-border/40 text-foreground placeholder:text-foreground/40 rounded-lg h-12"
@@ -200,7 +203,7 @@ export default function SignupPage() {
         <p className="text-center mt-8 text-foreground/60">
           Already have an account?{" "}
           <Link href="/login" className="text-accent hover:underline font-semibold">
-            Sign In
+            {signin ? 'Sign In ...' : 'Sign In'}
           </Link>
         </p>
       </div>
