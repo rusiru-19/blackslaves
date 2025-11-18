@@ -458,7 +458,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-foreground/70 text-sm">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : `$${shippingnpm }`}</span>
+                  <span>{shipping === 0 ? "Free" : `$${shipping }`}</span>
                 </div>
                 <div className="flex justify-between text-foreground/70 text-sm">
                   <span>Tax</span>
