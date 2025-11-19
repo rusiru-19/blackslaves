@@ -5,14 +5,16 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Lock, Check, ChevronRight } from 'lucide-react'
 import Header from "@/components/header"
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-
+import { ToastContainer, toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [loading, setLoading] = useState(true)
   const [cartItems, setCartItems] = useState<any[]>([])
-
+  const router = useRouter()
+  const [ordering, setOrdering] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -20,12 +22,8 @@ export default function CheckoutPage() {
     phone: "",
     address: "",
     city: "",
-    state: "",
+    province: "",
     zipCode: "",
-    cardName: "",
-    cardNumber: "",
-    expiry: "",
-    cvc: "",
     billingAddress: false,
   })
 
@@ -51,11 +49,53 @@ export default function CheckoutPage() {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
-  const handleSubmit = () => {
-    alert("Order placed successfully!")
+  const handleSubmit = async() => {
+  setOrdering(true)
+  const slaveIds = cartItems.map(item => item.id);
+  const uid = localStorage.getItem('uid')
+  const order_id = `${uid}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+  try {
+    await setDoc(doc(db, "orders", order_id), {
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phone: formData.phone,
+      address: formData.address,
+      city: formData.city,
+      province: formData.province,
+      zipCode: formData.zipCode,
+      id: order_id,
+      price: total,
+      slaves: slaveIds || []
+    }, { merge: true });
+
+        await updateDoc(doc(db, "users", uid), {
+      cart: [], 
+      orders: arrayUnion(order_id) 
+    });
+
+  const updates = cartItems.map(async (item) => {
+    const productRef = doc(db, "slaves", item.id);
+
+    await updateDoc(productRef, {
+      status: 'sold'
+    });
+  });
+  
+    await Promise.all(updates);
+    setOrdering(false)
+    router.push(`checkout/success/?order_id=${order_id}`);
+  } catch (error) {
+    setOrdering(false)
+    toast.error('an error occured')
+    console.log(error)
+    return { success: false, error };
   }
 
-  const steps = ["Shipping", "Payment", "Review"]
+
+  }
+
+  const steps = ["Shipping",  "Review"]
 
   // -------------------------------
   // ✅ FETCH CART FROM FIREBASE
@@ -118,7 +158,7 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-
+      <ToastContainer></ToastContainer>
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Back Button */}
         <Link
@@ -239,11 +279,11 @@ export default function CheckoutPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">State</label>
+                        <label className="block text-sm font-medium mb-2">province</label>
                         <input
                           type="text"
-                          name="state"
-                          value={formData.state}
+                          name="province"
+                          value={formData.province}
                           onChange={handleInputChange}
                           placeholder="NY"
                           className="w-full px-4 py-3 bg-card/50 border border-border/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-all"
@@ -266,85 +306,12 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {/* ----------------------------- */}
-            {/* Step 2: Payment */}
-            {/* ----------------------------- */}
-            {currentStep === 2 && (
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-2xl font-bold mb-6">Payment Information</h2>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Cardholder Name</label>
-                      <input
-                        type="text"
-                        name="cardName"
-                        value={formData.cardName}
-                        onChange={handleInputChange}
-                        placeholder="John Doe"
-                        className="w-full px-4 py-3 bg-card/50 border border-border/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Card Number</label>
-                      <input
-                        type="text"
-                        name="cardNumber"
-                        value={formData.cardNumber}
-                        onChange={handleInputChange}
-                        placeholder="4532 1234 5678 9010"
-                        className="w-full px-4 py-3 bg-card/50 border border-border/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-all font-mono"
-                      />
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Expiry Date</label>
-                        <input
-                          type="text"
-                          name="expiry"
-                          value={formData.expiry}
-                          onChange={handleInputChange}
-                          placeholder="MM/YY"
-                          className="w-full px-4 py-3 bg-card/50 border border-border/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-all font-mono"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2">CVC</label>
-                        <input
-                          type="text"
-                          name="cvc"
-                          value={formData.cvc}
-                          onChange={handleInputChange}
-                          placeholder="123"
-                          className="w-full px-4 py-3 bg-card/50 border border-border/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-all font-mono"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 p-4 bg-card/30 border border-border/40 rounded-lg">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="billingAddress"
-                        checked={formData.billingAddress}
-                        onChange={handleInputChange}
-                        className="w-4 h-4 rounded border-border/40 bg-card/50"
-                      />
-                      <span className="text-sm">Billing address same as shipping</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
+      
 
             {/* ----------------------------- */}
             {/* Step 3: Review */}
             {/* ----------------------------- */}
-            {currentStep === 3 && (
+            {currentStep === 2 && (
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold mb-6">Order Review</h2>
 
@@ -356,7 +323,7 @@ export default function CheckoutPage() {
                   </p>
                   <p className="text-foreground/70">{formData.address}</p>
                   <p className="text-foreground/70">
-                    {formData.city}, {formData.state} {formData.zipCode}
+                    {formData.city}, {formData.province} {formData.zipCode}
                   </p>
                   <p className="text-foreground/70 text-sm mt-3">{formData.email}</p>
                 </div>
@@ -412,7 +379,7 @@ export default function CheckoutPage() {
               >
                 Back
               </Button>
-              {currentStep < 3 ? (
+              {currentStep < 2 ? (
                 <Button
                   onClick={handleNext}
                   className="flex-1 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90"
@@ -425,7 +392,7 @@ export default function CheckoutPage() {
                   className="flex-1 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90"
                 >
                   <Lock className="w-4 h-4 mr-2" />
-                  Place Order
+                  {ordering ? 'Processing Your Order ...': 'Place Your Order'}
                 </Button>
               )}
             </div>

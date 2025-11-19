@@ -98,39 +98,42 @@ export default function ProductsPage() {
               <p className="text-foreground/60 col-span-full text-center">No products found.</p>
             ) : null}
 
-          {filteredProducts.map((product) => (
-            <Link key={product.id} href={`/products/${product.id}`}>
-              <div className="group cursor-pointer rounded-lg overflow-hidden bg-card/30 border border-border/40 hover:border-accent/50 transition-all duration-300">
-                {/* Product Image */}
-                <div className="relative aspect-square overflow-hidden bg-card">
-                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 right-3 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold">
-                    {product.category}
+          {filteredProducts
+            .filter(product => product.status === 'available')
+            .map((product) => (
+              <Link key={product.id} href={`/products/${product.id}`}>
+                <div className="group cursor-pointer rounded-lg overflow-hidden bg-card/30 border border-border/40 hover:border-accent/50 transition-all duration-300">
+                  {/* Product Image */}
+                  <div className="relative aspect-square overflow-hidden bg-card">
+                    <img
+                      src={product.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 right-3 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold">
+                      {product.category}
+                    </div>
                   </div>
-                </div>
 
-                {/* Product Info */}
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2 group-hover:text-accent transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-accent">${product.price}</span>
+                  {/* Product Info */}
+                  <div className="p-4">
+                    <h3 className="font-semibold mb-2 group-hover:text-accent transition-colors line-clamp-2">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-bold text-accent">${product.price}</span>
+                    </div>
+                    <p className="text-sm text-gray/200">height: {product.height} ft</p>
+                    <p className="text-sm text-gray/200">weight: {product.weight} lbs</p>
+                    <p className="text-sm text-gray/200">age: {product.age} years</p>
+                    <Button className="w-full mt-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90">
+                      View Details
+                    </Button>
                   </div>
-                  <p className="text-sm text-gray/200">height: {product.height} ft</p>
-                  <p className="text-sm text-gray/200">weight: {product.weight} lbs</p>
-                  <p className="text-sm text-gray/200">age: {product.age} years</p>
-                  <Button className="w-full mt-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90">
-                    View Details
-                  </Button>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+
         </div>
       </div>
     </div>
