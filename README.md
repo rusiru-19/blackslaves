@@ -45,7 +45,7 @@ A web application for managing orders, designed with **Next.js**, **Firebase**, 
 
 ## Login Credentials
 
-project url : [blackslaves.rusiru.de](www.blackslaves.rusiru.dev)
+project url : [blackslaves.rusiru.dev](https://blackslaves.rusiru.dev)
 
 ```ts
 | Role    | Email                  | Password       | Notes                          |
@@ -56,11 +56,12 @@ project url : [blackslaves.rusiru.de](www.blackslaves.rusiru.dev)
 ```
 
 ---
+# Project Brief 
 
----
 
 
 
 **Author:** rusiru-19
 **GitHub:** [https://github.com/rusiru-19](https://github.com/rusiru-19)
 
+1
