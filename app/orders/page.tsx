@@ -45,8 +45,7 @@ useEffect(() => {
 
     const fetchedOrders = await Promise.all(orderPromises);
 
-    // 3. add to state
-    setOrders(fetchedOrders.filter(Boolean));
+    setOrders(fetchedOrders.filter(Boolean) as Order[]);
     console.log(orders)
   }
 

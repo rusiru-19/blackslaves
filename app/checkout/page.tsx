@@ -69,7 +69,10 @@ export default function CheckoutPage() {
       slaves: slaveIds || []
     }, { merge: true });
 
-        await updateDoc(doc(db, "users", uid), {
+    if (!uid) {
+        return
+    }
+      await updateDoc(doc(db, "users", uid), {
       cart: [], 
       orders: arrayUnion(order_id) 
     });
