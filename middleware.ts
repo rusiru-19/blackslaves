@@ -9,12 +9,10 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Only admins can access /dashboard
   if (req.nextUrl.pathname.startsWith("/admin") && role !== "admin") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // Users can access /products
   if (req.nextUrl.pathname.startsWith("/products") && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
@@ -23,5 +21,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/orders/:path*" ,"/checkout/:path*", "/admin/:path*"],
 };

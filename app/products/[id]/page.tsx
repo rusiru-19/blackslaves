@@ -34,7 +34,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           console.log("Product data:", data);
           setProduct(data);
         } else {
-          console.log("No such document!");
+          console.log("No document!");
         }
       } catch (err) {
         console.error("Error fetching product:", err);

@@ -1,11 +1,11 @@
 "use client"
-
+ 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Package, Plus, Edit, Trash2, Search } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { AdminSidebar } from "@/components/side-bar"
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, query, where ,deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 export default function AdminProducts() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -35,6 +35,15 @@ useEffect(() => {
 
   fetchData();
 }, [])
+
+const deleteProduct = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, "slaves", id));
+    setProducts(products.filter((product) => product.id !== id));
+  } catch (err) {
+    console.error("Error deleting product:", err);
+  }
+}
   const filteredProducts = products.filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
@@ -111,10 +120,12 @@ useEffect(() => {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
+                          <Link href={`/admin/products/${product.id}/edit`}>
                           <button className="p-2 hover:bg-background/50 rounded-lg transition-colors text-foreground/60 hover:text-accent">
                             <Edit className="w-4 h-4" />
                           </button>
-                          <button className="p-2 hover:bg-background/50 rounded-lg transition-colors text-foreground/60 hover:text-destructive">
+                          </Link>
+                          <button className="p-2 hover:bg-background/50 rounded-lg transition-colors text-foreground/60 hover:text-destructive" onClick={() => deleteProduct(product.id) } >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
