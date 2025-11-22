@@ -75,7 +75,6 @@ export default function AdminOrders() {
                     <th className="px-6 py-4 text-left text-sm font-semibold">Slaves</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">Amount</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">Status</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,9 +92,9 @@ export default function AdminOrders() {
                       <td className="px-6 py-4">
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                            order.status === "Completed"
+                            order.status === "deleivered"
                               ? "bg-green-500/20 text-green-300"
-                              : order.status === "Processing"
+                              : order.status === "in process"
                                 ? "bg-blue-500/20 text-blue-300"
                                 : order.status === "Shipped"
                                   ? "bg-purple-500/20 text-purple-300"
@@ -105,11 +104,7 @@ export default function AdminOrders() {
                           {order.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <button className="text-accent hover:text-accent/80 font-semibold text-sm transition-colors">
-                          View →
-                        </button>
-                      </td>
+        
                     </tr>
                   ))}
                 </tbody>
