@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -67,14 +67,12 @@ export default function SignupPage() {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
               <ToastContainer />
 
-      {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
-        {/* Header */}
         <div className="mb-12">
           <Link
             href="/"
@@ -87,9 +85,7 @@ export default function SignupPage() {
           <h1 className="text-4xl font-bold mb-2">Create Account</h1>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name Field */}
           <div className="space-y-2">
             <Label htmlFor="name" className="text-sm font-medium">
               Full Name
@@ -104,7 +100,6 @@ export default function SignupPage() {
             />
           </div>
 
-          {/* Email Field */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium">
               Email Address
@@ -119,7 +114,6 @@ export default function SignupPage() {
             />
           </div>
 
-          {/* Password Field */}
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium">
               Password
@@ -143,7 +137,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Confirm Password Field */}
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-sm font-medium">
               Confirm Password
@@ -167,22 +160,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Terms Checkbox */}
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" className="mt-1 rounded" />
-            <span className="text-sm text-foreground/60">
-              I agree to the{" "}
-              <a href="#" className="text-accent hover:underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-accent hover:underline">
-                Privacy Policy
-              </a>
-            </span>
-          </label>
-
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 h-12 font-semibold text-base"
@@ -191,7 +168,6 @@ export default function SignupPage() {
           </Button>
         </form>
 
-        {/* Divider */}
         <div className="my-8 flex items-center gap-3">
           <div className="flex-1 border-t border-border/40" />
           <div className="flex-1 border-t border-border/40" />
@@ -199,7 +175,6 @@ export default function SignupPage() {
 
 
 
-        {/* Login Link */}
         <p className="text-center mt-8 text-foreground/60">
           Already have an account?{" "}
           <Link href="/login" className="text-accent hover:underline font-semibold">

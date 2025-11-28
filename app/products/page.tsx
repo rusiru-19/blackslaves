@@ -45,18 +45,15 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Navigation */}
 
       <Header />
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Title */}
         <div className="mb-12">
           <h1 className="text-5xl font-bold mb-4">Our Collection</h1>
           <p className="text-lg text-foreground/60">Discover Our Premium Mens Collection</p>
         </div>
 
-        {/* Search and Filters */}
         <div className="mb-12 space-y-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
@@ -68,7 +65,6 @@ export default function ProductsPage() {
             />
           </div>
 
-          {/* Category Filter */}
           <div className="flex gap-3 flex-wrap">
             <Filter className="w-5 h-5 text-foreground/60 my-auto" />
             {categories.map((category) => (
@@ -87,7 +83,6 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {/* Products Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
               <>
@@ -103,7 +98,6 @@ export default function ProductsPage() {
             .map((product) => (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <div className="group cursor-pointer rounded-lg overflow-hidden bg-card/30 border border-border/40 hover:border-accent/50 transition-all duration-300">
-                  {/* Product Image */}
                   <div className="relative aspect-square overflow-hidden bg-card">
                     <img
                       src={product.image || "/placeholder.svg"}
@@ -115,7 +109,6 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {/* Product Info */}
                   <div className="p-4">
                     <h3 className="font-semibold mb-2 group-hover:text-accent transition-colors line-clamp-2">
                       {product.name}
@@ -125,7 +118,6 @@ export default function ProductsPage() {
                     </div>
                     <p className="text-sm text-gray/200">height: {product.height} ft</p>
                     <p className="text-sm text-gray/200">weight: {product.weight} lbs</p>
-                    <p className="text-sm text-gray/200">age: {product.age} years</p>
                     <Button className="w-full mt-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90">
                       View Details
                     </Button>

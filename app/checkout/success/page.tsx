@@ -1,4 +1,3 @@
-// app/checkout/success/page.tsx
 import { Suspense } from "react";
 import OrderSuccessClient from "./success";
 export default function SuccessPage() {

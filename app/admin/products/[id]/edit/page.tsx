@@ -22,7 +22,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
     image: "",
   })
 
-  // Resolve params
   useEffect(() => {
     params.then(resolved => {
       console.log("Resolved Params:", resolved)
@@ -30,7 +29,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
     })
   }, [params])
 
-  // Load product once productId is available
   useEffect(() => {
     if (!productId) return
 
@@ -100,7 +98,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
             <div className="bg-card/50 border border-border/40 rounded-lg p-6">
               <label className="block text-sm font-semibold mb-4">Slave Image (URL)</label>
 
-              {/* Preview */}
               <div className="mb-4 w-full h-64 bg-background/50 border border-border/40 rounded-lg flex items-center justify-center overflow-hidden">
                 {formData.image ? (
                   <img src={formData.image} alt="Preview" className="h-full w-full object-cover" />
@@ -109,7 +106,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
                 )}
               </div>
 
-              {/* Image URL input */}
               <input
                 type="text"
                 name="image"
@@ -121,7 +117,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
               />
             </div>
 
-            {/* Product Details */}
             <div className="bg-card/50 border border-border/40 rounded-lg p-6 space-y-4">
               <h2 className="text-lg font-bold">Slaves Details</h2>
 
@@ -205,7 +200,6 @@ export default function EditProducts({ params }: { params: Promise<{ id: string 
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex items-center gap-4">
               <Button asChild variant="outline" className="rounded-lg">
                 <Link href="/admin/products">Cancel</Link>

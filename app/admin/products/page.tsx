@@ -29,7 +29,7 @@ useEffect(() => {
     } catch (err) {
       console.error("Error fetching products:", err);
     } finally {
-      setLoading(false);   // always runs
+      setLoading(false);   
     }
   };
 
@@ -51,7 +51,6 @@ const deleteProduct = async (id: string) => {
       <AdminSidebar />
 
       <div className="ml-64">
-        {/* Header */}
  
 
         <div className="max-w-7xl mx-auto px-6 py-8">
@@ -67,7 +66,6 @@ const deleteProduct = async (id: string) => {
             </Button>
           </div>
 
-          {/* Search and Filter */}
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <input
@@ -79,7 +77,6 @@ const deleteProduct = async (id: string) => {
             />
           </div>
 
-          {/* Products Table */}
           <div className="bg-card/50 border border-border/40 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">

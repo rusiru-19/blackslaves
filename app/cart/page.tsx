@@ -12,7 +12,6 @@ export default function CartPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 🧹 Remove item from cart
 const removeItem = async (id: string) => {
   setCartItems((prev) => prev.filter((item) => item.id !== id));
 
@@ -22,7 +21,6 @@ const removeItem = async (id: string) => {
 
     const userRef = doc(db, "users", uid);
 
-    // Get the user's current cart
     const userSnap = await getDoc(userRef);
     if (userSnap.exists()) {
       const userData = userSnap.data();
@@ -30,7 +28,6 @@ const removeItem = async (id: string) => {
         (cartItemId: string) => cartItemId !== id
       );
 
-      // Update the cart in Firestore
       await updateDoc(userRef, { cart: updatedCart });
       console.log(`Removed product ${id} from Firestore cart.`);
     } else {
@@ -42,7 +39,6 @@ const removeItem = async (id: string) => {
 };
 
 
-  // 🔢 Update quantity
   const updateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity === 0) {
       removeItem(id);
@@ -55,7 +51,6 @@ const removeItem = async (id: string) => {
     }
   };
 
-  // 🧠 Fetch user cart from Firestore
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -66,7 +61,6 @@ const removeItem = async (id: string) => {
           return;
         }
 
-        // ✅ Get user doc
         const userRef = doc(db, "users", uid);
         const userSnap = await getDoc(userRef);
 
@@ -79,7 +73,6 @@ const removeItem = async (id: string) => {
         const userData = userSnap.data();
         const cartIds = userData?.cart || [];
 
-        // ✅ Fetch product data for each product ID in the user's cart
         const products = await Promise.all(
           cartIds.map(async (productId: string) => {
             const productRef = doc(db, "slaves", productId);
@@ -91,7 +84,6 @@ const removeItem = async (id: string) => {
           })
         );
 
-        // Remove nulls (nonexistent products)
         const validProducts = products.filter((p) => p !== null) as any[];
         setCartItems(validProducts);
       } catch (error) {
@@ -104,7 +96,6 @@ const removeItem = async (id: string) => {
     fetchCart();
   }, []);
 
-  // 🧮 Totals
   const subtotal = cartItems.reduce(
     (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
     0
@@ -191,7 +182,6 @@ const removeItem = async (id: string) => {
             )}
           </div>
 
-          {/* 💳 Order Summary */}
           <div className="h-fit">
             <div className="p-6 bg-card/50 border border-border/40 rounded-lg sticky top-24">
               <h2 className="text-lg font-semibold mb-6">Order Summary</h2>

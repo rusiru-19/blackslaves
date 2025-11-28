@@ -58,14 +58,13 @@ export default function Header({ count = 0 }: HeaderProps) {
     const auth = getAuth();
     await signOut(auth);
     localStorage.removeItem("uid");
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1969 00:00:00 GMT";
+    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1969 00:00:00 GMT";
 
     toast.success('Logged out');
     window.location.reload();
   }
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (!(e.target as HTMLElement).closest(".dropdown-container")) {
@@ -81,7 +80,6 @@ export default function Header({ count = 0 }: HeaderProps) {
       <ToastContainer />
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         
-        {/* Logo */}
         <a href="/" className="text-2xl font-bold tracking-tighter">
           BLACKSLAVES
         </a>
@@ -94,7 +92,6 @@ export default function Header({ count = 0 }: HeaderProps) {
 
           {isLoggedIn ? (
             <div className="relative dropdown-container">
-              {/* Trigger Button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -117,7 +114,6 @@ export default function Header({ count = 0 }: HeaderProps) {
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-card shadow-lg rounded-lg py-1 border border-border/40 z-50 animate-in fade-in slide-in-from-top-2">
                 
-                {/* Admin-only items */}
                 {role === "admin" && (
                   <Link
                     href="/admin"
@@ -128,7 +124,6 @@ export default function Header({ count = 0 }: HeaderProps) {
                   </Link>
                 )}
 
-                {/* Cart (everyone) */}
                 <Link
                   href="/cart"
                   className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent/20 transition relative"
@@ -142,7 +137,6 @@ export default function Header({ count = 0 }: HeaderProps) {
                   )}
                 </Link>
 
-                {/* Logout */}
                 <button
                   onClick={logout}
                   className="flex items-center gap-2 w-full px-4 py-2 text-left text-sm hover:bg-accent/20 transition"

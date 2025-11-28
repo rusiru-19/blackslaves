@@ -36,10 +36,8 @@ export default function AdminDashboard() {
   
   return (
     <div className="min-h-screen bg-background">
-      {/* Admin Sidebar */}
       <AdminSidebar />
 
-      {/* Main Content Area */}
       <div className="ml-64">
 
 
@@ -49,7 +47,6 @@ export default function AdminDashboard() {
             <p className="text-foreground/60">Welcome back! Here's your business overview.</p>
           </div>
 
-          {/* Key Metrics */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[
               { label: "Unsold Slaves", value: slave,  icon: Package },
@@ -74,7 +71,6 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Recent Orders */}
             <div className="lg:col-span-2">
               <div className="bg-card/50 border border-border/40 rounded-lg p-6">
                 <h2 className="text-lg font-semibold mb-6">Recent Orders</h2>
@@ -116,14 +112,13 @@ export default function AdminDashboard() {
                 <Button
                   asChild
                   variant="outline"
-                  className="w-full mt-6 rounded-lg border-border/50 hover:bg-card bg-transparent"
+                  className="w-full mt-6 rounded-lg border-border/50 hover:bg-gray-900 hover:text-accent bg-transparent"
                 >
                   <Link href="/admin/orders">View All Orders</Link>
                 </Button>
               </div>
             </div>
 
-            {/* Quick Actions */}
             <div className="space-y-6">
               <div className="bg-card/50 border border-border/40 rounded-lg p-6">
                 <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
@@ -142,7 +137,7 @@ export default function AdminDashboard() {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full rounded-lg border-border/50 hover:bg-card justify-start bg-transparent"
+                    className="w-full rounded-lg border-border/50 hover:bg-gray-900 hover:text-accent justify-start bg-transparent "
                   >
                     <Link href="/admin/products" className="gap-3">
                       <BarChart3 className="w-4 h-4" />
@@ -153,7 +148,7 @@ export default function AdminDashboard() {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full rounded-lg border-border/50 hover:bg-card justify-start bg-transparent"
+                    className="w-full rounded-lg border-border/50 hover:bg-gray-900 hover:text-accent justify-start bg-transparent "
                   >
                     <Link href="/admin/customers" className="gap-3">
                       <Users className="w-4 h-4" />

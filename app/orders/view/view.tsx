@@ -22,7 +22,6 @@ export default function OrderSuccessPage() {
 
     const fetchOrder = async () => {
       try {
-        // 1️⃣ Fetch order document
         const orderRef = doc(db, "orders", orderId);
         const orderSnap = await getDoc(orderRef);
 
@@ -35,7 +34,6 @@ export default function OrderSuccessPage() {
         const order = orderSnap.data();
         setOrderData(order);
 
-        // 2️⃣ Fetch product details based on IDs in `slaves` array
         const productPromises = (order.slaves || []).map(async (productId: string) => {
           const productRef = doc(db, "slaves", productId);
           const productSnap = await getDoc(productRef);
@@ -74,7 +72,6 @@ export default function OrderSuccessPage() {
     );
   }
 
-  // Calculations
   const subtotal = products.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
   const shipping = 0;
   const tax = Math.round(subtotal * 0.08 * 100) / 100;
@@ -85,7 +82,6 @@ export default function OrderSuccessPage() {
       <Header />
 
       <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Success Message */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <div className="relative">
@@ -99,7 +95,6 @@ export default function OrderSuccessPage() {
           </p>
         </div>
 
-        {/* Shipping Info */}
         <div className="p-6 bg-card/50 border border-border/40 rounded-lg mb-8">
           <div className="flex items-start gap-3 mb-4">
             <Truck className="w-5 h-5 text-accent mt-1" />
@@ -112,7 +107,6 @@ export default function OrderSuccessPage() {
           </div>
         </div>
 
-        {/* Order Items */}
         <div className="mb-8">
           <h3 className="font-semibold mb-4">Order Details</h3>
           <div className="space-y-3 mb-6">

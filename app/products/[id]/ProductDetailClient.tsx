@@ -12,7 +12,6 @@ export default function ProductDetailClient({ productId }: Props) {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  console.log("Product ID:", productId); // should now print correctly
 
   useEffect(() => {
     const fetchProduct = async () => {

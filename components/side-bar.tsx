@@ -19,8 +19,9 @@ export function AdminSidebar() {
         const auth = getAuth();
         await signOut(auth);
         localStorage.removeItem("uid");
-        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1969 00:00:00 GMT";
+        document.cookie = "role=; path=/; expires=Thu, 01 Jan 1969 00:00:00 GMT";
+        // updating the cookie to an old date so tht it wont work hee
 
         toast.success('logout')
         window.location.reload();
@@ -30,7 +31,6 @@ export function AdminSidebar() {
   
   return (
     <aside className="w-64 bg-card/50 border-r border-border/40 fixed left-0 top-0 h-screen overflow-y-auto flex flex-col">
-      {/* Logo */}
       <div className="p-6 border-b border-border/40">
         <Link href="/admin" className="text-2xl font-bold tracking-tighter">
           BLACKSLAVES
@@ -38,7 +38,6 @@ export function AdminSidebar() {
         <p className="text-xs text-accent font-semibold tracking-widest mt-2">ADMIN PANEL</p>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-6 space-y-2">
         {menuItems.map((item) => {
           const Icon = item.icon
@@ -60,7 +59,6 @@ export function AdminSidebar() {
         })}
       </nav>
 
-      {/* Footer */}
       <div className="p-6 border-t border-border/40 space-y-3">
 
         <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-foreground/70 hover:bg-destructive/20 hover:text-destructive transition-colors"

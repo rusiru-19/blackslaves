@@ -27,7 +27,6 @@ export default function CheckoutPage() {
     billingAddress: false,
   })
 
-  // Calculations
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const shipping = 0
   const tax = Math.round(subtotal * 0.08 * 100) / 100
@@ -100,9 +99,6 @@ export default function CheckoutPage() {
 
   const steps = ["Shipping",  "Review"]
 
-  // -------------------------------
-  // ✅ FETCH CART FROM FIREBASE
-  // -------------------------------
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -125,7 +121,6 @@ export default function CheckoutPage() {
         const userData = userSnap.data()
         const cartIds = userData?.cart || []
 
-        // Fetch each product
         const products = await Promise.all(
           cartIds.map(async (productId: string) => {
             const productRef = doc(db, "slaves", productId)
@@ -148,7 +143,6 @@ export default function CheckoutPage() {
 
     fetchCart()
   }, [])
-  // -------------------------------
 
   if (loading) {
     return (
@@ -163,7 +157,6 @@ export default function CheckoutPage() {
       <Header />
       <ToastContainer></ToastContainer>
       <div className="max-w-6xl mx-auto px-6 py-8">
-        {/* Back Button */}
         <Link
           href="/cart"
           className="inline-flex items-center gap-2 text-foreground/60 hover:text-accent transition-colors mb-8"
@@ -173,9 +166,7 @@ export default function CheckoutPage() {
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Checkout Form */}
           <div className="lg:col-span-2">
-            {/* Step Indicators */}
             <div className="mb-12">
               <div className="flex justify-between mb-8">
                 {steps.map((step, index) => (
@@ -199,9 +190,6 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* ----------------------------- */}
-            {/* Step 1: Shipping */}
-            {/* ----------------------------- */}
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div>

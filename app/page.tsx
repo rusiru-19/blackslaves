@@ -98,7 +98,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-16 border-y border-border/40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
@@ -120,7 +119,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Featured Products */}
       <section className="py-24 bg-gradient-to-b from-background to-accent/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -186,7 +184,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-24 bg-gradient-to-br from-accent/20 via-accent/10 to-background">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
           <h2 className="text-4xl md:text-5xl font-bold">Ready to Upgrade Your Style?</h2>

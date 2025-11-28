@@ -1,8 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Download, Filter } from "lucide-react"
 import { useState, useEffect } from "react"
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -25,7 +23,6 @@ useEffect(() => {
 
   async function loadOrders(userId:any) {
 
-    // 1. get user doc
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
 
@@ -34,7 +31,6 @@ useEffect(() => {
     const userData = userSnap.data();
     const orderIds: string[] = userData.orders || [];
 
-    // 2. fetch each order
     const orderPromises = orderIds.map(async (orderId) => {
       const orderRef = doc(db, "orders", orderId);
       const orderSnap = await getDoc(orderRef);
@@ -61,7 +57,6 @@ useEffect(() => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground mb-4 sm:mb-0">My Orders</h1>
           </div>
-        {/* Orders Table */}
         <div className="bg-card/50 border border-border/40 rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">

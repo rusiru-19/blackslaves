@@ -24,15 +24,12 @@ export default function LoginPage() {
   const handleSubmit = async (e:any) => {
     e.preventDefault()
     try {
-      //auth
       setLoinin(true)
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
       localStorage.setItem('uid', userCredential.user.uid);
-      // get user role 
     const docRef = doc(db, "users", userCredential.user.uid);  
     const docSnap = await getDoc(docRef);
-    //added a role in here bcz we cant get the const role outside the if condition heeee
     let role = "customer"; 
     if (docSnap.exists()) {
       const userData = docSnap.data();
@@ -42,7 +39,6 @@ export default function LoginPage() {
       console.log("No such document!");
       }
    
-    // set the cookie
       document.cookie = `token=${token};  path=/; ${formData.rememberMe ? 'max-age=' + 60 * 60 * 24 * 30 : ''}`;
       document.cookie = `role=${role}; path=/; ${formData.rememberMe ? 'max-age=' + 60 * 60 * 24 * 30 : ''}`;
       setLoinin(false)
@@ -70,7 +66,6 @@ const router = useRouter()
       </div>
 
       <div className="w-full max-w-md relative z-10">
-        {/* Header */}
         <div className="mb-12">
           <Link
             href="/"
@@ -84,9 +79,7 @@ const router = useRouter()
           <p className="text-foreground/60">Sign in to your Luxe account</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Field */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium">
               Email Address
@@ -101,7 +94,6 @@ const router = useRouter()
             />
           </div>
 
-          {/* Password Field */}
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium">
               Password
@@ -138,7 +130,6 @@ const router = useRouter()
     
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 h-12 font-semibold text-base"
@@ -147,14 +138,12 @@ const router = useRouter()
           </Button>
         </form>
 
-        {/* Divider */}
         <div className="my-8 flex items-center gap-3">
           <div className="flex-1 border-t border-border/40" />
           <div className="flex-1 border-t border-border/40" />
         </div>
 
 
-        {/* Signup Link */}
         <p className="text-center mt-8 text-foreground/60">
           Don't have an account?{" "}
           <Link href="/signup" className="text-accent hover:underline font-semibold">

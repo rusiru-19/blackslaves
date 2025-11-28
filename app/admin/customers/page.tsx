@@ -50,7 +50,6 @@ export default function AdminCustomers() {
             <p className="text-foreground/60">Manage and view customer information</p>
           </div>
 
-          {/* Search */}
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <input
@@ -62,7 +61,6 @@ export default function AdminCustomers() {
             />
           </div>
 
-          {/* Customers Grid */}
           <div className="grid gap-6">
             {filteredCustomers.map((customer) => (
               <div key={customer.id} className="bg-card/50 border border-border/40 rounded-lg p-6">

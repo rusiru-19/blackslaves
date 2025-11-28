@@ -64,7 +64,6 @@ export default function AdminOrders() {
           </div>
 
 
-          {/* Orders Table */}
           <div className="bg-card/50 border border-border/40 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">

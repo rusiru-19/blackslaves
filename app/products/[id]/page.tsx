@@ -158,12 +158,7 @@ const handleAddToCart = async () => {
                   </Button>
             </div>
 
-            <div className="border-t border-border/40 pt-8 space-y-3 text-sm text-foreground/70">
-              <p>✓ Free shipping on orders over $100</p>
-              <p>✓ 30-day money-back guarantee</p>
-              <p>✓ Authentic products guaranteed</p>
-              <p>✓ Lifetime customer support</p>
-            </div>
+     
           </div>
         </div>
       </div>
